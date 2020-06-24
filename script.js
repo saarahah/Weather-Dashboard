@@ -1,17 +1,40 @@
 $(document).ready(function(){
 
-// var searchForm = document.querySelector(".form-inline");
-// var searchBtn = document.querySelector(".btn");
-// var formControl=document.querySelector(".form-control");
 
 var container = $(".container");
 var searchForm = $(".form-inline");
 var formControl = $(".form-control")
+var mainCard = $("#maincard")
 var searchBtn = $(".btn")
+var location =[];
+var card1 = $("#card1");
+
+
+searchButton();
+
+function searchButton(){
+$(searchBtn).on("click", function(e){
+    alert("The paragraph was clicked.");
+    event.preventDefault();
+    var input = $(this).siblings(formControl).val();
+
+if(input != null){
+        
+    location.push(input);       
+   console.log($(this).siblings(formControl).val());
+   console.log(location);
+    }
+    oneDay();
+    fiveDay();
+    
+    location=[];
+  });
+ 
+}
+
+function oneDay(){
 
 var APIKey = "be6a5afd637e52c8345f9d5c594e2f10";
-
-var location = "Orlando"
 
     // Here we are building the URL we need to query the database
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?" +
@@ -24,37 +47,66 @@ var location = "Orlando"
       // We store all of the retrieved data inside of an object called "response"
       .then(function(response) {
 
+ 
+        $(".city").text(response.name);
+        $(".temp").text("Temperature (K) " + response.main.temp)
+        $(".windspeed").text("Wind Speed: " + response.wind.speed);
+        $(".humidity").text("Humidity: " + response.main.humidity);
+        $(".uv").text("UV: " + response.clouds.all);
+
+        
+    })
+}
+
+$(mainCard).prepend('<h1 class="city"></h1>');
+$(mainCard).append('<p class= "temp"></p>');
+$(mainCard).append('<p class = "humidity"></p>');
+$(mainCard).append('<p class ="windspeed"></p>');
+$(mainCard).append('<p class ="uv"></p>');
+///////current weather////////////
+
+/////////////////////////////5day///////////////////
+
+
+function fiveDay(){
+ var APIKey = "be6a5afd637e52c8345f9d5c594e2f10";
+
+    // Here we are building the URL we need to query the database
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" + "q=London,us" +"&appid="  + APIKey;
+
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    })
+      // We store all of the retrieved data inside of an object called "response"
+      .then(function(response) {
+
         // Log the queryURL
         console.log(queryURL);
 
         // Log the resulting object
-        console.log(response);
+        // console.log(response);
+        console.log(response.list[8]);
+        console.log(response.list[14]);
+        console.log(response.list[22]);
+        console.log(response.list[29]);
+        // console.log(temp.day);
+
+        $(".date").text(response.list[8].dt_txt);
+        $(".icon").text(response.list[8].weather[0].icon);
+        // console.log("this is the date" + response.list[8].dt_txt);
+        console.log(response.list[8].weather[0].icon);
+
     })
+}
 
-    // searchBtn.addEventListener("click", function(event) {
-    //      event.preventDefault();
-    //   console.log("this is form control" + formControl.sibling)
-    //    console.log("this is search form" + searchForm.nextSibling);
-
-    // $(document).on("click", searchBtn, function(e) {  
-    //      alert("saved!");
-    //     event.preventDefault();
-    //     var input = $(this).closest(formControl).val();
-    //     console.log($(this).closest(formControl).val());
+    $(card1).append('<h6 class="date"></h6>');
+    $(card1).append('<h1 class="icon"></h1>');
 
 
-    $(searchBtn).on("click", function(e){
-        alert("The paragraph was clicked.");
-        event.preventDefault();
-        var input = $(this).siblings(formControl).val();
-       console.log($(this).siblings(formControl).val());
-      });
 
 
-    //   $(document).on("click", ".saveBtn", function(e) {  
-    //     alert("saved!");
-    //     var input = $(this).siblings("textarea").val();
-        
- 
+
+
 
 });
