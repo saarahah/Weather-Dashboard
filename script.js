@@ -32,18 +32,35 @@ var hasGeneratedCards = false;
 var searchHistory=[];
 
 
+
 var storedHistory = JSON.parse(localStorage.getItem("searchHistory"));
 console.log(storedHistory);
 
 // If todos were retrieved from localStorage, update the todos array to it
 if (storedHistory !== null) {
-  searchHistory.push(storedHistory);
+  searchHistory = storedHistory;
 }
 
+
+
 for (i=0;i<listLength;i++){
-    searchListArray[i] = document.createElement("li");
-    addHistory.append(searchHistory[i]);
+    var listID = "listItem" + i;
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.setAttribute('href', "#");
+    a.id="link";
+    li.id=listID;
+    $('a').click(function(){
+        console.log("running the click function");
+        location.push($(this).text());
+        oneDay();
+        fiveDay();
+        location=[];
+    });
+    li.appendChild(a);
+    addHistory.append(li);
 }
+
 
 // Render todos to the DOM
 renderSearchHistory();
@@ -129,11 +146,10 @@ function fiveDay(){
     var actualHour = moment().format("HH");
     console.log(actualHour);
     var adjustedHour=Math.floor(actualHour/3);
-    // console.log(adjustedHour);
+    console.log("this is the adjusted hour " + adjustedHour);
+    
 
-    for(i=0;i<6;i++){
-    $('#weatherIcon').remove();
-    }
+    
     
     
  var APIKey = "be6a5afd637e52c8345f9d5c594e2f10";
@@ -147,6 +163,8 @@ function fiveDay(){
     })
       // We store all of the retrieved data inside of an object called "response"
       .then(function(response) {
+
+        console.log(response);
 
      
         //  console.log(response);
@@ -184,7 +202,7 @@ function fiveDay(){
                 $(cardArray[i]).children(".cardtemp").text((dayArray[i])[adjustedHour].main.temp);
                 $(cardArray[i]).children(".cardhumid").text((dayArray[i])[adjustedHour].main.humidity);
 
-                
+                $(cardArray[i]).children(".cardicon").empty();
 
                 var iconcode = (dayArray[i])[adjustedHour].weather[0].icon;
                 var iconurl = "https://openweathermap.org/img/wn/" + iconcode + ".png";
@@ -247,10 +265,18 @@ function fiveDay(){
     // todoCountSpan.textContent = todos.length;
   
     // Render a new li for each todo
-        console.log("search history length is " +searchHistory.length)
-    for (var i = 0; i < searchHistory.length; i++) {
-      var searchItem = searchHistory[i];
-        searchListArray[i].textContent = searchItem;
+       // console.log("search history length is " +storedHistory.length)
+        if(storedHistory!=null){
+    for (var i = 0; i < storedHistory.length; i++) {
+        var listID = "listItem" + i;
+        $('#'+listID+'').children('#link').text(storedHistory[i]);
+        console.log($('#'+listID+'').children('#link'));
+    }
+
+
+
+      //var searchItem = searchHistory[i];
+      //  searchListArray[i].textContent = searchItem;
       
      // li.textContent = searchItem;
       //li.setAttribute("data-index", i);
