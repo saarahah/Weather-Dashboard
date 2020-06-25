@@ -4,3 +4,5 @@ This application is a weather dashboard which uses the open weather API, Javascr
 
 https://saarahah.github.io/Weather-Dashboard/
 
+![image](/screenshotmain.PNG)
+
