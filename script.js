@@ -31,6 +31,8 @@ var hasGeneratedCards = false;
 
 var searchHistory=[];
 
+var uvNumber = 0;
+
 
 
 var storedHistory = JSON.parse(localStorage.getItem("searchHistory"));
@@ -67,6 +69,7 @@ renderSearchHistory();
 
 searchButton();
 //generateSearchHistory();
+
 
 
 
@@ -111,19 +114,19 @@ function oneDay(){
         var iconcodemain= response.weather[0].icon; 
         var iconurlmain = "https://openweathermap.org/img/wn/" + iconcodemain + ".png";
         var img = $("<img>");
-        //  console.log(img);
         img.attr("src", iconurlmain)
    console.log(response.coord.lat + "," + response.coord.lon);
 
    uvIndex(response.coord.lat, response.coord.lon);
+   //uvIndexColor();
+
 
         var date= (moment().format("dddd, MMM Do YYYY"))
         
         $(".city").text(response.name).append(img, date);
         $(".temp").text("Temperature (K) " + response.main.temp)
         $(".windspeed").text("Wind Speed: " + response.wind.speed);
-        $(".humidity").text("Humidity: " + response.main.humidity);
-        // $(".uv").text("UV: " + );     
+        $(".humidity").text("Humidity: " + response.main.humidity);    
     })
 }
 $(mainCard).prepend('<h1 class="city" id="mainicon"></h1>');
@@ -132,6 +135,25 @@ $(mainCard).append('<p class= "temp"></p>');
 $(mainCard).append('<p class = "humidity"></p>');
 $(mainCard).append('<p class ="windspeed"></p>');
 $(mainCard).append('<p class ="uv"></p>');
+
+
+
+function uvIndexColor(){
+    console.log("uv index is "+ uvNumber);
+    if (uvNumber < 3){
+    $('.uv').addClass('low')
+    console.log("uV UNDER 10")
+
+    }else if (uvNumber > 2 && uvNumber < 8 ){
+    $('.uv').addClass('medium')   
+    
+    }else if(uvNumber > 7 && uvNumber < 11){
+        $('.uv').addClass('high')  
+    }else if(uvNumber > 11){
+        $('.uv').addClass('veryhigh') 
+    }
+}
+
 ///////current weather//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -246,7 +268,12 @@ function fiveDay(){
 //       // We store all of the retrieved data inside of an object called "response"
        .then(function(response) {     
           console.log(response.value);
-          $(".uv").text("UV: " + response.value);   
+          $(".uv").text("UV: " + response.value);
+          console.log("uv number is " + uvNumber);   
+           uvNumber = response.value;
+           console.log("now uv number is " + uvNumber);
+
+           uvIndexColor();
  })
 
    

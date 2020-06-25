@@ -3,3 +3,24 @@
     margin-left: auto;
 }
 
+.low{
+    color: green;
+    font-family: cursive;
+}
+
+.medium{
+    color: yellow;
+    font-family: cursive;
+}
+
+.high{
+    color: red;
+    font-family: cursive;
+
+}
+
+.veryhigh{
+    color:purple;
+    font-family: cursive;
+
+}
