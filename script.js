@@ -18,7 +18,7 @@ var card5 = $("#card5");
 var cardArray= [card1, card2, card3, card4, card5];
 
 var searchListArray = [];
-var listLength = 10;
+var listLength = 30;
 
 //var increment = ["1", "2", "3", "4", "5"]
 //arrays for 5 day daily times
