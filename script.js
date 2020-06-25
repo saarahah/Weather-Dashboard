@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-
+var addHistory = $("#addHistory");
 var container = $(".container");
 var searchForm = $(".form-inline");
 var formControl = $(".form-control")
@@ -14,6 +14,9 @@ var card4 = $("#card4");
 var card5 = $("#card5");
 var cardArray= [card1, card2, card3, card4, card5];
 
+var searchListArray = [];
+var listLength = 10;
+
 var increment = ["1", "2", "3", "4", "5"]
 
 var day1=[];
@@ -26,21 +29,44 @@ var dayArray=[day1, day2, day3, day4, day5];
 
 var hasGeneratedCards = false;
 
+var searchHistory=[];
 
+
+var storedHistory = JSON.parse(localStorage.getItem("searchHistory"));
+console.log(storedHistory);
+
+// If todos were retrieved from localStorage, update the todos array to it
+if (storedHistory !== null) {
+  searchHistory.push(storedHistory);
+}
+
+for (i=0;i<listLength;i++){
+    searchListArray[i] = document.createElement("li");
+    addHistory.append(searchHistory[i]);
+}
+
+// Render todos to the DOM
+renderSearchHistory();
 
 searchButton();
+//generateSearchHistory();
+
+
+
 
 function searchButton(){
 $(searchBtn).on("click", function(e){
     alert("The paragraph was clicked.");
     event.preventDefault();
     var input = $(this).siblings(formControl).val();
+    
+    searchHistory.push(input);
+   storeHistory();
+   renderSearchHistory();
 
-if(input != null){
-        
-    location.push(input);       
-//    console.log($(this).siblings(formControl).val());
-//    console.log(location);
+
+if(input != null){       
+location.push(input);       
     }
     oneDay();
     fiveDay();
@@ -70,7 +96,9 @@ function oneDay(){
         var img = $("<img>");
         //  console.log(img);
         img.attr("src", iconurlmain)
-        //    console.log(response);
+   console.log(response.coord.lat + "," + response.coord.lon);
+
+   uvIndex(response.coord.lat, response.coord.lon);
 
         var date= (moment().format("dddd, MMM Do YYYY"))
         
@@ -78,7 +106,7 @@ function oneDay(){
         $(".temp").text("Temperature (K) " + response.main.temp)
         $(".windspeed").text("Wind Speed: " + response.wind.speed);
         $(".humidity").text("Humidity: " + response.main.humidity);
-        $(".uv").text("UV: " + response.clouds.all);     
+        // $(".uv").text("UV: " + );     
     })
 }
 $(mainCard).prepend('<h1 class="city" id="mainicon"></h1>');
@@ -175,10 +203,6 @@ function fiveDay(){
                 //      }
 
                 $(cardArray[i]).children('.cardicon').append(img);
-
-
-
-
             }
 
             hasGeneratedCards = true;
@@ -190,26 +214,55 @@ function fiveDay(){
 }
 
 
-function uvIndex(){
+
+ function uvIndex(latitude,longitude){   
     var APIKey = "be6a5afd637e52c8345f9d5c594e2f10";
 
-    // Here we are building the URL we need to query the database
-    var queryURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+ APIKey + "&lat={lat}&lon={lon}"
+//     // Here we are building the URL we need to query the database
+     var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + latitude + "&lon=" + longitude;
 
     $.ajax({
       url: queryURL,
-      method: "GET"
+       method: "GET"
     })
-      // We store all of the retrieved data inside of an object called "response"
-      .then(function(response) {
+//       // We store all of the retrieved data inside of an object called "response"
+       .then(function(response) {     
+          console.log(response.value);
+          $(".uv").text("UV: " + response.value);   
+ })
 
-     
-         console.log(response);
+   
 
-}
+ }
+
+ function storeHistory(){
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    console.log(localStorage.getItem("searchHistory"));
+
+ }
+
+ function renderSearchHistory() {
+    // Clear todoList element and update todoCountSpan
+    // todoList.innerHTML = "";
+    // todoCountSpan.textContent = todos.length;
+  
+    // Render a new li for each todo
+        console.log("search history length is " +searchHistory.length)
+    for (var i = 0; i < searchHistory.length; i++) {
+      var searchItem = searchHistory[i];
+        searchListArray[i].textContent = searchItem;
+      
+     // li.textContent = searchItem;
+      //li.setAttribute("data-index", i);
+  
+      
+    }
+  }
+ 
 
 
 });
+
 
 
 //finish uv index
