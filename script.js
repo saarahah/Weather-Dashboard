@@ -24,13 +24,11 @@ var day5=[];
 
 var dayArray=[day1, day2, day3, day4, day5];
 
+var hasGeneratedCards = false;
+
 
 
 searchButton();
-
-// setInterval(() => {
-    // $("p#currentDay").text(moment().format("dddd, MMM Do YYYY"));
-//   }, 1000);
 
 function searchButton(){
 $(searchBtn).on("click", function(e){
@@ -98,16 +96,16 @@ $(mainCard).append('<p class ="uv"></p>');
 /////////////////////////////5day///////////////////
 
 
-
-
-
-
 function fiveDay(){
 
     var actualHour = moment().format("HH");
     console.log(actualHour);
     var adjustedHour=Math.floor(actualHour/3);
-    console.log(adjustedHour);
+    // console.log(adjustedHour);
+
+    for(i=0;i<6;i++){
+    $('#weatherIcon').remove();
+    }
     
     
  var APIKey = "be6a5afd637e52c8345f9d5c594e2f10";
@@ -123,8 +121,11 @@ function fiveDay(){
       .then(function(response) {
 
      
-         console.log(response);
+        //  console.log(response);
 
+        for(i=0; i<5; i++){
+            dayArray[i] = [];
+        }
 
          var j=0;
         for(i=0; i<response.list.length; i++){ 
@@ -132,11 +133,10 @@ function fiveDay(){
                 if(dayArray[j].length===8){
                     j++;
                 }
-                if(i===response.list.length){
+                if(i==response.list.length-1){
                     j=0;
                 }
             }
-            console.log("day 5 has" + day5[0].main.temp);
             
 
         
@@ -144,61 +144,70 @@ function fiveDay(){
          
             for(i=0; i<dayArray.length; i++){
 
-                $(cardArray[i]).prepend('<h6 class="carddate"></h6>');
-                $(cardArray[i]).append('<div class="cardicon"><div>');
-                $(cardArray[i]).append('<p class="cardtemp"></p>');
-                $(cardArray[i]).append('<p class="cardhumid"></p>');
+                if(hasGeneratedCards!=true){
+                    $(cardArray[i]).prepend('<h6 class="carddate"></h6>');
+                    $(cardArray[i]).append('<div class="cardicon"><div>');
+                    $(cardArray[i]).append('<p class="cardtemp"></p>');
+                    $(cardArray[i]).append('<p class="cardhumid"></p>');
+                }
 
 
-                $(".carddate").text(response.list[8].dt_txt);
+                $(cardArray[i]).children(".carddate").text((dayArray[i])[adjustedHour].dt_txt);
+                $(cardArray[i]).children(".cardtemp").text((dayArray[i])[adjustedHour].main.temp);
+                $(cardArray[i]).children(".cardhumid").text((dayArray[i])[adjustedHour].main.humidity);
 
-                var iconcode1= response.list[8].weather[0].icon;
-                var iconurl1 = "https://openweathermap.org/img/wn/" + iconcode1 + ".png";
-                var img = $("<img>");
-                   img.attr("src", iconurl1)
-                     $('#icon1').append(img);
-            
-                    $("#temp1").text(response.list[8].main.temp);
-                    $("#temp1").text(response.list[8].main.humidity);
-                    $("#date2").text(response.list[13].dt_txt);
-                    $("#temp2").text(response.list[13].main.temp);
-                    $("#temp2").text(response.list[13].main.humidity);
+                
+
+                var iconcode = (dayArray[i])[adjustedHour].weather[0].icon;
+                var iconurl = "https://openweathermap.org/img/wn/" + iconcode + ".png";
+                var img = $('<img id="weatherIcon">');
+
+                // console.log("iconcode = " +iconcode+ ", iconurl = " + iconurl)
+
+                   img.attr("src", iconurl)
+                   
+                //    if(hasGeneratedCards===true) {
+                //          $('#weatherIcon').remove();
+                //          $(cardArray[i]).children('.cardicon').append(img);
+                //          console.log($(cardArray[i]).children('#weatherIcon'))
+                //      } else {
+                //         $(cardArray[i]).children('.cardicon').append(img);
+                //      }
+
+                $(cardArray[i]).children('.cardicon').append(img);
 
 
 
 
             }
 
-    //  $("#date1").text(response.list[8].dt_txt);
+            hasGeneratedCards = true;
 
-    // var iconcode1= response.list[8].weather[0].icon;
-    // var iconurl1 = "https://openweathermap.org/img/wn/" + iconcode1 + ".png";
-    // var img = $("<img>");
-    //    img.attr("src", iconurl1)
-    //      $('#icon1').append(img);
 
-    //     $("#temp1").text(response.list[8].main.temp);
-    //     $("#temp1").text(response.list[8].main.humidity);
-    //     $("#date2").text(response.list[13].dt_txt);
-    //     $("#temp2").text(response.list[13].main.temp);
-    //     $("#temp2").text(response.list[13].main.humidity);
-        // console.log("this is the date" + response.list[8].dt_txt);
-        // console.log(response.list[8].weather[0].icon);
 
-        // console.log(response);
 
     })
 }
 
 
+function uvIndex(){
+    var APIKey = "be6a5afd637e52c8345f9d5c594e2f10";
 
+    // Here we are building the URL we need to query the database
+    var queryURL = "http://api.openweathermap.org/data/2.5/uvi?appid="+ APIKey + "&lat={lat}&lon={lon}"
 
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    })
+      // We store all of the retrieved data inside of an object called "response"
+      .then(function(response) {
 
+     
+         console.log(response);
 
-    $(card1).prepend('<h6 id="date1"></h6>');
-    $(card1).append('<div id="icon1"><div>');
-    $(card1).append('<p id="temp1"></p>');
-    $(card1).append('<p id="humid1"></p>');
+}
+
 
 });
 
