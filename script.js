@@ -79,7 +79,7 @@ searchButton();
 //function on click search button to link input to button click
 function searchButton(){
 $(searchBtn).on("click", function(e){
-    alert("The paragraph was clicked.");
+   // alert("The paragraph was clicked.");
     event.preventDefault();
     var input = $(this).siblings(formControl).val();
     
