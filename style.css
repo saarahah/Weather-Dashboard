@@ -6,21 +6,25 @@
 .low{
     color: green;
     font-family: cursive;
+    font-weight: bolder;
 }
 
 .medium{
     color: orange;
     font-family: cursive;
+    font-weight: bolder;
 }
 
 .high{
     color: red;
     font-family: cursive;
+    font-weight: bolder;
 
 }
 
 .veryhigh{
     color:purple;
     font-family: cursive;
+    font-weight: bolder;
 
 }
