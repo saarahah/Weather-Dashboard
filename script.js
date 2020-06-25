@@ -144,12 +144,13 @@ function uvIndexColor(){
     $('.uv').addClass('low')
     console.log("uV UNDER 10")
 
-    }else if (uvNumber > 2 && uvNumber < 8 ){
+    }else if (uvNumber > 2 && uvNumber < 6 ){
     $('.uv').addClass('medium')   
     
-    }else if(uvNumber > 7 && uvNumber < 11){
+    }else if(uvNumber > 5 && uvNumber < 11){
         $('.uv').addClass('high')  
-    }else if(uvNumber > 11){
+
+    }else if(uvNumber > 10){
         $('.uv').addClass('veryhigh') 
     }
 }
