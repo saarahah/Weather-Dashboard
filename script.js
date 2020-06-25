@@ -208,8 +208,6 @@ function fiveDay(){
             }
             
 
-        
-            // console.log("loggin" + response.list.length);
          
             for(i=0; i<dayArray.length; i++){
 
@@ -231,17 +229,8 @@ function fiveDay(){
                 var iconurl = "https://openweathermap.org/img/wn/" + iconcode + ".png";
                 var img = $('<img id="weatherIcon">');
 
-                // console.log("iconcode = " +iconcode+ ", iconurl = " + iconurl)
 
                    img.attr("src", iconurl)
-                   
-                //    if(hasGeneratedCards===true) {
-                //          $('#weatherIcon').remove();
-                //          $(cardArray[i]).children('.cardicon').append(img);
-                //          console.log($(cardArray[i]).children('#weatherIcon'))
-                //      } else {
-                //         $(cardArray[i]).children('.cardicon').append(img);
-                //      }
 
                 $(cardArray[i]).children('.cardicon').append(img);
             }
@@ -288,26 +277,12 @@ function fiveDay(){
  }
 
  function renderSearchHistory() {
-    // Clear todoList element and update todoCountSpan
-    // todoList.innerHTML = "";
-    // todoCountSpan.textContent = todos.length;
-  
-    // Render a new li for each todo
-       // console.log("search history length is " +storedHistory.length)
         if(storedHistory!=null){
     for (var i = 0; i < storedHistory.length; i++) {
         var listID = "listItem" + i;
         $('#'+listID+'').children('#link').text(storedHistory[i]);
         console.log($('#'+listID+'').children('#link'));
     }
-
-
-
-      //var searchItem = searchHistory[i];
-      //  searchListArray[i].textContent = searchItem;
-      
-     // li.textContent = searchItem;
-      //li.setAttribute("data-index", i);
   
       
     }
@@ -317,6 +292,3 @@ function fiveDay(){
 
 });
 
-
-
-//finish uv index
